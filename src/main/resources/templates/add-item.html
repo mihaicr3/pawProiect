@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Item</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Add a New Bar Item</h2>
+
+    <!-- Display success message if item added successfully -->
+    <div th:if="${param.success}" class="alert alert-success">
+        Item added successfully!
+    </div>
+
+    <form th:action="@{/manager/add-item}" th:object="${barItem}" method="post">
+        <div class="form-group">
+            <label for="name">Item Name</label>
+            <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" class="form-control" th:field="*{category}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="unitPrice">Unit Price</label>
+            <input type="number" id="unitPrice" name="unitPrice" class="form-control" th:field="*{unitPrice}" step="0.01" required>
+        </div>
+
+        <div class="form-group">
+            <label for="unit">Unit (e.g., bottle, ml)</label>
+            <input type="text" id="unit" name="unit" class="form-control" th:field="*{unit}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+
+    <a th:href="@{/home}" class="btn btn-secondary mt-3">Back to Home</a>
+</div>
+</body>
+</html>
