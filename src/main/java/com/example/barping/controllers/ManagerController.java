@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 public class ManagerController {
     @GetMapping("/dashboard")
     public String managerDashboard() {
-        return "Manager Dashboard";
+        return "dashboards/manager-dashboard";
     }
 
     @Autowired
@@ -32,4 +32,5 @@ public class ManagerController {
         barItemService.save(barItem); // Save the BarItem to the database
         return "redirect:/manager/add-item?success"; // Redirect with a success flag
     }
+
 }

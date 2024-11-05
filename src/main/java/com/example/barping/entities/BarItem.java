@@ -14,16 +14,25 @@ public class BarItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
+
+
     @Setter
     @Getter
     private String name;
+
+
     @Setter
     @Getter
     private String category;
+
+
     @Setter
     @Getter
     private BigDecimal unitPrice;
+
+
     @Setter
     @Getter
     private String unit; // e.g., ml, bottle, etc.

@@ -16,13 +16,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<Inventory> findAll() {
-        return inventoryRepository.findAll();
+        return inventoryRepository.findAll(); // Fetch all inventory items
     }
 
     @Override
     public Inventory findById(Long id) {
         return inventoryRepository.findById(id).orElse(null);
     }
+
 
     @Override
     public Inventory save(Inventory inventory) {
