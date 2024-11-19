@@ -30,7 +30,7 @@ public class BarItem {
 
     @Setter
     @Getter
-    private BigDecimal unitPrice;
+    private float unitPrice;
 
 
     @Setter
