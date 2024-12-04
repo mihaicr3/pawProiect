@@ -16,14 +16,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<Inventory> findAll() {
-        return inventoryRepository.findAll(); // Fetch all inventory items
+        return inventoryRepository.findAll();
     }
 
     @Override
     public Inventory findById(Long id) {
         return inventoryRepository.findById(id).orElse(null);
     }
-
 
     @Override
     public Inventory save(Inventory inventory) {
@@ -41,4 +40,11 @@ public class InventoryServiceImpl implements InventoryService {
                 .filter(inventory -> inventory.getQuantity() <= inventory.getRestockThreshold())
                 .toList();
     }
+
+    @Override
+    public Inventory findByBarItemId(Long barItemId) {
+        return inventoryRepository.findByBarItemId(barItemId).orElse(null);
+    }
 }
+
+

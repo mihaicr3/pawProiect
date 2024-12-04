@@ -5,37 +5,38 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Set;
 
 @Entity
-public class ClientOrder {
+public class ClientOrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "client_order_id", nullable = false)
     @Getter
     @Setter
-    private LocalDate orderDate;
+    private ClientOrder clientOrder;
+
+    @ManyToOne
+    @JoinColumn(name = "bar_item_id", nullable = false)
+    @Getter
+    @Setter
+    private BarItem barItem;
 
     @Getter
     @Setter
-    private String clientName;
+    private int quantity;
 
     @Getter
     @Setter
-    private String clientContact;
-
-    @OneToMany(mappedBy = "clientOrder", cascade = CascadeType.ALL)
-    @Getter
-    @Setter
-    private Set<ClientOrderDetail> orderDetails;
+    private BigDecimal unitPrice;
 
     @Getter
     @Setter
-    private BigDecimal totalAmount;
+    private BigDecimal lineTotal;
 
     // Additional methods or validations can be added here
 }

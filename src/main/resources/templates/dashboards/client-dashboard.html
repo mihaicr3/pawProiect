@@ -8,6 +8,14 @@
 <div class="container text-center">
     <h1 class="my-4">Welcome, Client!</h1>
     <p>This is your dashboard. Here you will see available products and offers.</p>
+
+    <!-- Button to create a new order -->
+    <div class="my-4">
+        <a th:href="@{/orders/create}" class="btn btn-primary btn-lg">
+            Create New Order
+        </a>
+    </div>
+
     <!-- Placeholder for client content -->
     <div class="content-placeholder my-5">
         <p>Content will be displayed here for clients.</p>

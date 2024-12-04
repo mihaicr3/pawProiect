@@ -14,8 +14,10 @@ public class Inventory {
 
     @Setter
     @Getter
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "bar_item_id", referencedColumnName = "id")
     private BarItem barItem;
+
     @Setter
     @Getter
     private int quantity;

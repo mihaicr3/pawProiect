@@ -10,4 +10,5 @@ public interface InventoryService {
     Inventory save(Inventory inventory);
     void deleteById(Long id);
     List<Inventory> findItemsToRestock();
+    Inventory findByBarItemId(Long barItemId); // New method
 }
