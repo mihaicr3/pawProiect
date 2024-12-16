@@ -51,9 +51,9 @@
       </td>
       <td>
         <!-- Form for marking order as complete -->
-        <form th:action="@{/bartender/complete/{id}(id=${order.id})}" method="post">
+        <form th:action="@{/bartender/deliver/{id}(id=${order.id})}" method="post">
           <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-          <button type="submit" class="btn btn-success btn-sm">Mark as Complete</button>
+          <button type="submit" class="btn btn-success btn-sm">Mark as Delivered</button>
         </form>
       </td>
     </tr>

@@ -18,17 +18,18 @@
       <th>Client Table</th>
       <th>Order Date</th>
       <th>Total Amount</th>
+      <th>Status</th>
       <th>Details</th>
-      <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="order : ${orders}">
+    <tr th:each="order : ${orders}" th:data-order-id="${order.id}">
       <td th:text="${order.id}"></td>
       <td th:text="${order.clientName}"></td>
       <td th:text="${order.clientContact}"></td>
       <td th:text="${order.orderDate}"></td>
       <td th:text="${order.totalAmount}"></td>
+      <td data-column="status" th:text="${order.orderCompletion != 0 ? 'Delivered' : 'Done'}"></td>
       <td>
         <table class="table table-bordered table-sm">
           <thead>
@@ -49,17 +50,11 @@
           </tbody>
         </table>
       </td>
-      <td>
-        <!-- Form for marking order as complete -->
-        <form th:action="@{/bartender/complete/{id}(id=${order.id})}" method="post">
-          <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-          <button type="submit" class="btn btn-success btn-sm">Mark as Complete</button>
-        </form>
-      </td>
     </tr>
     </tbody>
   </table>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

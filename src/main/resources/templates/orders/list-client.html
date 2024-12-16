@@ -3,6 +3,8 @@
 <head>
   <title>Client Orders</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
@@ -18,17 +20,18 @@
       <th>Client Table</th>
       <th>Order Date</th>
       <th>Total Amount</th>
+      <th>Status</th>
       <th>Details</th>
-      <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="order : ${orders}">
+    <tr th:each="order : ${orders}" th:data-order-id="${order.id}">
       <td th:text="${order.id}"></td>
       <td th:text="${order.clientName}"></td>
       <td th:text="${order.clientContact}"></td>
       <td th:text="${order.orderDate}"></td>
       <td th:text="${order.totalAmount}"></td>
+      <td data-column="status" th:text="${order.orderCompletion == 1 ? 'Delivering' : 'Prep'}"></td>
       <td>
         <table class="table table-bordered table-sm">
           <thead>
@@ -49,17 +52,35 @@
           </tbody>
         </table>
       </td>
-      <td>
-        <!-- Form for marking order as complete -->
-        <form th:action="@{/bartender/complete/{id}(id=${order.id})}" method="post">
-          <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-          <button type="submit" class="btn btn-success btn-sm">Mark as Complete</button>
-        </form>
-      </td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<script>
+  // Connect to the WebSocket
+  var socket = new SockJS('/ws');
+  var stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, function(frame) {
+    console.log('Connected: ' + frame);
+
+    // Subscribe to the /topic/orders topic
+    stompClient.subscribe('/topic/orders', function(message) {
+      var orderId = message.body;  // Order ID from the message
+
+      // Find the order row in the table and update the status
+      var row = document.querySelector("tr[data-order-id='" + orderId + "']");
+      if (row) {
+        var statusCell = row.querySelector("td[data-column='status']");
+        if (statusCell) {
+          statusCell.textContent = 'Delivering';  // Update the status to "Completed"
+        }
+      }
+    });
+  });
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

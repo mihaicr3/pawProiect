@@ -4,6 +4,20 @@
   <title>Create Order</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <script>
+    function filterItems() {
+      const searchQuery = document.getElementById("itemSearch").value.toLowerCase();
+      const dropdown = document.getElementById("itemDropdown");
+      const options = dropdown.options;
+
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        if (i === 0) continue; // Skip the default 'Select an item' option
+
+        const text = option.textContent || option.innerText;
+        option.style.display = text.toLowerCase().includes(searchQuery) ? "block" : "none";
+      }
+    }
+
     function addItem() {
       const itemDropdown = document.getElementById("itemDropdown");
       const selectedItem = itemDropdown.options[itemDropdown.selectedIndex];
@@ -37,6 +51,8 @@
 
       // Reset input fields
       document.getElementById("itemQuantity").value = "";
+      document.getElementById("itemSearch").value = "";
+      itemDropdown.selectedIndex = 0;
     }
 
     function removeItem(button) {
@@ -64,7 +80,8 @@
     <h3 class="my-3">Select Items</h3>
     <div class="row g-2 align-items-center mb-3">
       <div class="col-md-8">
-        <select id="itemDropdown" class="form-select">
+        <input type="text" id="itemSearch" class="form-control" placeholder="Search item" oninput="filterItems()">
+        <select id="itemDropdown" class="form-select mt-2">
           <option value="" disabled selected>Select an item</option>
           <option th:each="item : ${barItems}" th:value="${item.id}" th:text="${item.name} + ' - $' + ${item.unitPrice}"></option>
         </select>

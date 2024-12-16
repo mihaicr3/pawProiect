@@ -18,6 +18,16 @@ public class ClientOrder {
 
     @Getter
     @Setter
+    private Long userId;
+
+    @Getter
+    @Setter
+    private int orderCompletion;
+
+
+
+    @Getter
+    @Setter
     private LocalDate orderDate;
 
     @Getter

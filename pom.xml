@@ -95,6 +95,27 @@
         </dependency>
 
 
+        <!-- Spring Boot Starter for WebSocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- Spring Messaging for WebSocket -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.17.2</version> <!-- Use the version of Jackson that you're using -->
+        </dependency>
+
+
+
+
+
     </dependencies>
 
     <build>

@@ -9,4 +9,9 @@ public interface ClientOrderService {
     ClientOrder findById(Long id);
     ClientOrder save(ClientOrder clientOrder);
     void deleteById(Long id);
+    List<ClientOrder> findIncompleteOrders();
+    List<ClientOrder> findDeliverablesOrders();
+    List<ClientOrder> findActiveOrdersByUserId();
+    void updateOrderCompletion(Long orderId, int completion);
+
 }

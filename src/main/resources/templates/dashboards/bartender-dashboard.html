@@ -9,6 +9,17 @@
     <h1 class="my-4">Welcome, Bartender!</h1>
     <p>This is your dashboard. You will manage bar tasks here.</p>
 
+    <div class="my-4">
+        <a th:href="@{/bartender/to-do}" class="btn btn-primary btn-lg">
+            Orders to be prepped
+        </a>
+
+        <a th:href="@{/bartender/done}" class="btn btn-primary btn-lg">
+            Orders to be served
+        </a>
+    </div>
+
+
     <!-- Placeholder for bartender content -->
     <div class="content-placeholder my-5">
         <p>Bar-related options and tools will be displayed here.</p>

@@ -1,20 +1,23 @@
 package com.example.barping.controllers;
 
-import com.example.barping.entities.BarItem;
-import com.example.barping.entities.ClientOrder;
-import com.example.barping.entities.ClientOrderDetail;
-import com.example.barping.entities.Inventory;
+import com.example.barping.entities.*;
+import com.example.barping.repositories.UserRepository;
 import com.example.barping.services.ClientOrderService;
 import com.example.barping.services.BarItemService;
 import com.example.barping.services.InventoryService;
+import com.example.barping.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -29,18 +32,39 @@ public class ClientOrderController {
 
     @Autowired
     private InventoryService inventoryService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
-    @GetMapping
-    public String listOrders(Model model) {
-        model.addAttribute("orders", clientOrderService.findAll());
-        return "orders/list";
-    }
 
     @GetMapping("/create")
     public String createOrderForm(Model model) {
         model.addAttribute("barItems", barItemService.findAll());
         return "orders/create";
     }
+
+
+    @GetMapping("/list")
+    public String listOrdersUndelivered(Model model) {
+//        model.addAttribute("orders", clientOrderService.findDeliverablesOrders());
+//        model.addAttribute("orders", clientOrderService.findIncompleteOrders());
+          model.addAttribute("orders",clientOrderService.findActiveOrdersByUserId());
+        return "orders/list-client";
+
+    }
+    @GetMapping("/all-orders")
+    public String listAllOrdersReversed(Model model) {
+//        model.addAttribute("orders", clientOrderService.findDeliverablesOrders());
+//        model.addAttribute("orders", clientOrderService.findIncompleteOrders());
+        List<ClientOrder > orders=clientOrderService.findAll();
+        Collections.reverse(orders);
+        model.addAttribute("orders",orders );
+        return "orders/list-client-all";
+
+    }
+
+
 
     @PostMapping("/save")
     public String saveOrder(
@@ -63,7 +87,14 @@ public class ClientOrderController {
             return "orders/create";
         }
 
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user= userRepository.findByUsername(username);
+
+
         ClientOrder clientOrder = new ClientOrder();
+
+        clientOrder.setUserId(user.getId());
         clientOrder.setClientName(clientName);
         clientOrder.setClientContact(clientContact);
         clientOrder.setOrderDate(LocalDate.now());
@@ -79,17 +110,13 @@ public class ClientOrderController {
 
             BarItem barItem = barItemService.findById(itemId);
             if (barItem == null) {
-                System.out.println("A puscat aici");
                 model.addAttribute("error", "Invalid item selected.");
                 model.addAttribute("barItems", barItemService.findAll());
                 return "orders/create";
             }
 
             Inventory inventory = inventoryService.findByBarItemId(barItem.getId());
-
-            System.out.println(inventory);
             if (inventory == null || inventory.getQuantity() < quantity) {
-                System.out.println("A puscat aicisiaaicicicsaiisaidcsahjsafsaj");
                 model.addAttribute("error", "Insufficient stock for item: " + barItem.getName());
                 model.addAttribute("barItems", barItemService.findAll());
                 return "orders/create";
@@ -118,10 +145,13 @@ public class ClientOrderController {
         clientOrder.setOrderDetails(orderDetails);
         clientOrder.setTotalAmount(totalAmount);
 
+        // Save the new order
         clientOrderService.save(clientOrder);
 
-        return "redirect:/orders";
+
+        return "redirect:/orders/list"; // Redirect to the orders list page
     }
+
 
 
 }
