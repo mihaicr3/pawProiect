@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Filtered Orders</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Filtered Orders</h1>
+  <div>
+    <a href="/manager/sold-main" class="btn btn-secondary mb-3">Back to Filter</a>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>User ID</th>
+      <th>Order Date</th>
+      <th>Client Name</th>
+      <th>Client Contact</th>
+      <th>Order Completion</th>
+      <th>Total Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+      <td th:text="${order.id}"></td>
+      <td th:text="${order.userId}"></td>
+      <td th:text="${order.orderDate}"></td>
+      <td th:text="${order.clientName}"></td>
+      <td th:text="${order.clientContact}"></td>
+      <td th:text="${order.orderCompletion}"></td>
+      <td th:text="${order.totalAmount}"></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td colspan="6" class="text-end"><strong>Total:</strong></td>
+      <td id="totalAmount" class="font-weight-bold">0</td>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Get all the order total amounts
+  const totalAmounts = document.querySelectorAll("tbody tr td:nth-child(7)");
+  let total = 0;
+
+  // Loop through each total amount and sum them up
+  totalAmounts.forEach(amountCell => {
+    const amount = parseFloat(amountCell.innerText.replace(/[^\d.-]/g, '')); // Remove any non-numeric characters
+    if (!isNaN(amount)) {
+      total += amount;
+    }
+  });
+
+  // Display the total amount in the totalAmount cell
+  document.getElementById("totalAmount").innerText = total.toFixed(2);
+</script>
+</body>
+</html>
